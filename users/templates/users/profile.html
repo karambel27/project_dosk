@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <form method="post" enctype="multipart/form-data" class="profile-card">
+        {% csrf_token %}
+
+        <h1>Профиль</h1>
+
+        <div class="profile-top">
+            {% if user.photo %}
+                <img src="{{ user.photo.url }}" class="profile-photo">
+            {% else %}
+                <img src="/media/users/photo_default.jpg" class="profile-photo">
+            {% endif %}
+
+            <div class="profile-name">
+                <h2>{{ user.username }}</h2>
+                <p>{{ user.email }}</p>
+            </div>
+        </div>
+
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <div class="form-error">
+            {{ form.non_field_errors }}
+        </div>
+
+        <div class="profile-fields">
+            {% for f in form %}
+                <div class="profile-field">
+                    <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+                    {{ f }}
+                    <div class="form-error">{{ f.errors }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="profile-actions">
+            <button type="submit" class="profile-save-btn">
+                Сохранить изменения
+            </button>
+
+            <a href="{% url 'account_change_password' %}" class="profile-password-link">
+                Сменить пароль
+            </a>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

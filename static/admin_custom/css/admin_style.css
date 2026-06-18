@@ -1,0 +1,158 @@
+body {
+    background:
+        linear-gradient(rgba(8, 7, 5, 0.88), rgba(8, 7, 5, 0.92)),
+        url('/static/images/photo_fon.png') center / cover fixed no-repeat;
+    color: #f5e6c8;
+}
+
+#header {
+    background: #0d0b08;
+    border-bottom: 1px solid #8b6b2f;
+    box-shadow: 0 2px 15px rgba(212, 175, 55, 0.25);
+}
+
+#branding h1,
+#branding h1 a:link,
+#branding h1 a:visited {
+    color: #d4af37;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#user-tools {
+    color: #f5e6c8;
+}
+
+#user-tools a {
+    color: #d4af37;
+}
+
+.module {
+    background: rgba(20, 17, 12, 0.92);
+    border: 1px solid #8b6b2f;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: linear-gradient(180deg, #5a421d, #2a1f10);
+    color: #f5e6c8;
+    border-bottom: 1px solid #8b6b2f;
+    font-weight: 700;
+}
+
+div.breadcrumbs {
+    background: #15110c;
+    color: #b9a77b;
+    border-bottom: 1px solid #8b6b2f;
+}
+
+div.breadcrumbs a {
+    color: #d4af37;
+}
+
+a:link,
+a:visited {
+    color: #d4af37;
+}
+
+a:hover {
+    color: #fff2b0;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+    background: linear-gradient(180deg, #6e5526, #4d3a1d);
+    color: #f5e6c8;
+    border: 1px solid #a57c32;
+    border-radius: 6px;
+    padding: 8px 14px;
+    transition: 0.2s;
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover,
+.submit-row input:hover,
+a.button:hover {
+    background: linear-gradient(180deg, #80622d, #5b4520);
+    color: #ffffff;
+}
+
+.button.default,
+input[type=submit].default,
+.submit-row input.default {
+    background: linear-gradient(180deg, #8b6b2f, #5a421d);
+}
+
+#changelist {
+    background: rgba(20, 17, 12, 0.88);
+    border-radius: 10px;
+}
+
+#changelist table {
+    background: rgba(15, 13, 10, 0.9);
+}
+
+thead th {
+    background: #1a160f;
+    color: #d4af37;
+    border-bottom: 1px solid #8b6b2f;
+}
+
+tbody tr {
+    background: rgba(20, 17, 12, 0.85);
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(28, 23, 15, 0.85);
+}
+
+tbody tr:hover {
+    background: rgba(80, 61, 28, 0.35);
+}
+
+td,
+th {
+    border-bottom: 1px solid rgba(139, 107, 47, 0.35);
+}
+
+.object-tools a {
+    background: linear-gradient(180deg, #6e5526, #4d3a1d);
+    border: 1px solid #a57c32;
+    color: #f5e6c8;
+    border-radius: 6px;
+}
+
+.object-tools a:hover {
+    background: linear-gradient(180deg, #80622d, #5b4520);
+}
+
+input,
+textarea,
+select,
+.vTextField {
+    background: #14110c;
+    color: #f5e6c8;
+    border: 1px solid #8b6b2f;
+    border-radius: 6px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.35);
+    outline: none;
+}
+
+.submit-row {
+    background: rgba(20, 17, 12, 0.95);
+    border: 1px solid #8b6b2f;
+    border-radius: 10px;
+}

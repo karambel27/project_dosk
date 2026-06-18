@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Подтверждение Email</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Подтвердить Email
+    </button>
+
+</form>
+
+{% endblock %}

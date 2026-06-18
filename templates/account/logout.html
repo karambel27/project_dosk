@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Выход</h1>
+
+<p>Вы действительно хотите выйти?</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Выйти
+    </button>
+
+</form>
+
+{% endblock %}

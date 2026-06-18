@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="responses-menu-page">
+
+    <div class="responses-menu-header">
+        <h1>Отклики</h1>
+        <p>Управляйте своими откликами и просматривайте ответы на ваши объявления</p>
+    </div>
+
+    <div class="responses-menu-cards">
+
+        <div class="responses-menu-card">
+            <div class="responses-menu-icon">📜</div>
+
+            <h2>Отклики на мои объявления</h2>
+
+            <p>
+                Просмотрите игроков, которые откликнулись на ваши объявления
+            </p>
+
+            <a href="{% url 'myresponseads' %}" class="responses-menu-btn">
+                Перейти
+            </a>
+        </div>
+
+        <div class="responses-menu-card">
+            <div class="responses-menu-icon">✉️</div>
+
+            <h2>Мои отклики</h2>
+
+            <p>
+                Просмотрите отклики, которые вы оставили на объявления
+            </p>
+
+            <a href="{% url 'myresponse' %}" class="responses-menu-btn">
+                Перейти
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

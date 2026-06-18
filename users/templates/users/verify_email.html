@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="verify-container">
+
+    <div class="verify-card">
+
+        <div class="verify-icon">
+            ✉️
+        </div>
+
+        <h1>Подтверждение аккаунта</h1>
+
+        <p class="verify-text">
+            На вашу электронную почту был отправлен код подтверждения.
+        </p>
+
+        <p class="verify-text">
+            Введите полученный код, чтобы активировать аккаунт.
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <div class="verify-field">
+                <label for="{{ form.code.id_for_label }}">
+                    Код подтверждения
+                </label>
+
+                {{ form.code }}
+
+                <div class="form-error">
+                    {{ form.code.errors }}
+                </div>
+            </div>
+
+            <button type="submit" class="verify-btn">
+                Подтвердить аккаунт
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

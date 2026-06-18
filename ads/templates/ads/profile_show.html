@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="author-profile-page">
+
+    <section class="author-profile-hero">
+        <div class="author-profile-avatar-box">
+            {% if profile_user.photo %}
+                <img src="{{ profile_user.photo.url }}" alt="{{ profile_user.username }}" class="author-profile-avatar-img">
+            {% else %}
+                <img src="/media/users/photo_default.jpg" alt="{{ profile_user.username }}" class="author-profile-avatar-img">
+            {% endif %}
+        </div>
+
+        <div class="author-profile-user-info">
+            <h1>{{ profile_user.username }}</h1>
+
+            {% if profile_user.is_email_verified %}
+                <span class="author-profile-badge author-profile-badge-ok">
+                    Почта подтверждена
+                </span>
+            {% else %}
+                <span class="author-profile-badge author-profile-badge-no">
+                    Почта не подтверждена
+                </span>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="author-profile-content">
+
+        <div class="author-profile-panel">
+            <h2>Личная информация</h2>
+
+            <div class="author-profile-row">
+                <span>Имя:</span>
+                <strong>{{ profile_user.first_name|default:"Не указано" }}</strong>
+            </div>
+
+            <div class="author-profile-row">
+                <span>Фамилия:</span>
+                <strong>{{ profile_user.last_name|default:"Не указано" }}</strong>
+            </div>
+
+            <div class="author-profile-row">
+                <span>Дата рождения:</span>
+                <strong>
+                    {% if profile_user.data_bird %}
+                        {{ profile_user.data_bird|date:"d.m.Y" }}
+                    {% else %}
+                        Не указано
+                    {% endif %}
+                </strong>
+            </div>
+        </div>
+
+        <div class="author-profile-panel">
+            <h2>Статистика</h2>
+
+            <div class="author-profile-stats">
+                <div class="author-profile-stat-item">
+                    <strong>{{ profile_user.ads.count }}</strong>
+                    <span>объявлений</span>
+                </div>
+
+                <div class="author-profile-stat-item">
+                    <strong>{{ profile_user.responses.count }}</strong>
+                    <span>откликов</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="author-profile-panel author-profile-bio">
+        <h2>О себе</h2>
+
+        {% if profile_user.bio %}
+            <div class="author-profile-bio-text">
+                {{ profile_user.bio|linebreaks }}
+            </div>
+        {% else %}
+            <p class="author-profile-empty">
+                Пользователь пока ничего о себе не рассказал.
+            </p>
+        {% endif %}
+    </section>
+
+</div>
+
+{% endblock %}

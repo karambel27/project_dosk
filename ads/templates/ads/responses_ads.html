@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="owner-responses-page">
+
+    <h1>Отклики на мои объявления</h1>
+
+    <div class="owner-responses-filter">
+        <form method="get" class="owner-responses-filter">
+            <label for="{{ filter.form.ads.id_for_label }}">
+                Фильтр по объявлению:
+            </label>
+
+            {{ filter.form.ads }}
+
+            <button type="submit" class="owner-filter-btn">
+                Применить
+            </button>
+
+            <a href="{% url 'myresponseads' %}" class="owner-filter-reset">
+                Сбросить
+            </a>
+        </form>
+    </div>
+
+    <div class="owner-responses-list">
+
+        {% for response in responses %}
+        <div class="owner-response-card">
+
+            <div class="owner-response-avatar">
+                {% if response.author.photo %}
+                <img src="{{ response.author.photo.url }}" alt="{{ response.author.username }}">
+                {% else %}
+                <span>{{ response.author.username|first|upper }}</span>
+                {% endif %}
+            </div>
+
+            <div class="owner-response-content">
+                <div class="owner-response-top">
+                    <div>
+                        <p class="owner-response-author">
+                            От: <strong>{{ response.author.username }}</strong>
+                        </p>
+
+                        <p class="owner-response-date">
+                            {{ response.created_at|date:"d.m.Y в H:i" }}
+                        </p>
+                    </div>
+
+                    <div>
+                        {% if response.is_accepted == 2 %}
+                        <span class="response-status accepted">
+                                    Принят
+                                </span>
+
+                        {% elif response.is_accepted == 1 %}
+                        <span class="response-status rejected">
+                                    Отклонён
+                                </span>
+
+                        {% else %}
+                        <span class="response-status waiting">
+                                    Ожидает ответа
+                                </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <p class="owner-response-ad">
+                    На объявление:
+                    <a href="{{ response.ads.get_absolute_url }}">
+                        {{ response.ads.title }}
+                    </a>
+                </p>
+
+                <p class="owner-response-text">
+                    {{ response.text }}
+                </p>
+            </div>
+            {% if response.is_accepted == 0 %}
+            <div class="owner-response-actions">
+                <button class="owner-response-accept"><a href="{% url 'accept' response.pk %}">✓</a></button>
+                <button class="owner-response-delete"><a href="{% url 'delete' response.pk %}">🗑</a></button>
+            </div>
+            {% endif %}
+
+        </div>
+        {% empty %}
+        <div class="owner-responses-empty">
+            Пока никто не откликнулся на ваши объявления.
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

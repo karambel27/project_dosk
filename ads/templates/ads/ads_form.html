@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="ad-form-page">
+    <form action="" method="post" enctype="multipart/form-data" class="ad-form">
+        {% csrf_token %}
+        {{ form.media }}
+
+        <h1 class="ad-form-title">{{ title }}</h1>
+
+        <div class="ad-form-decor"></div>
+
+        <div class="ad-form-errors">
+            {{ form.non_field_errors }}
+        </div>
+
+        <div class="form-row">
+            <label for="{{ form.title.id_for_label }}">Заголовок <span>*</span></label>
+
+            <div class="form-field">
+                {{ form.title }}
+                <p class="form-help">Кратко опишите суть вашего объявления</p>
+                {{ form.title.errors }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label for="{{ form.category.id_for_label }}">Категория <span>*</span></label>
+
+            <div class="form-field">
+                {{ form.category }}
+                <p class="form-help">Выберите категорию, которая лучше всего подходит к вашему объявлению</p>
+                {{ form.category.errors }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label for="{{ form.content.id_for_label }}">Содержание <span>*</span></label>
+
+            <div class="form-field">
+                {{ form.content }}
+                <p class="form-help">Вы можете добавлять изображения, видео и другое содержимое для более наглядного
+                    описания</p>
+                {{ form.content.errors }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" name="save_draft" class="draft-btn">
+                {% if update %}
+                💾 Сохранить изменение в черновик
+                {% else %}
+                💾 Сохранить как черновик
+                {% endif %}
+            </button>
+
+            <button type="submit" name="publish" class="publish-btn">
+                {% if update %}
+                📨 Переопубликовать объявление
+                {% else %}
+                📨 Опубликовать объявление
+                {% endif %}
+
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

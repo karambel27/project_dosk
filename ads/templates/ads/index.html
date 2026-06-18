@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load ads_tags %}
+<div class="org">
+    <h1>Доска объявлений MMORPG</h1>
+    <p>Найти группу, гильдию или игроков для совместных приключений</p>
+    {% if perms.ads.add_ads %}
+    <a href="{% url 'createdads' %}" class="create-ad-btn">
+        <span class="plus-icon">+</span>
+        Создать объявление
+    </a>
+    {% endif  %}
+</div>
+<div class="home-layout">
+    <aside class="catside">
+        <p class="catside-title">Категории</p>
+        <ul class="catside-list">
+            {% for cat in categories %}
+            <li class="catside-item">
+                <a class="{% if request.GET.category == cat.id|stringformat:'s' %}active-category{% endif %}"
+                   href="?category={{ cat.id }}">{{ cat.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section class="newads">
+        <h3>Последние объявления</h3>
+
+        {% if ads %}
+        <ul class="ads-list">
+            {% for post in ads %}
+            <li class="ads_view">
+                <a href="{{ post.get_absolute_url }}" class="ads-link">
+                <div class="ads-body">
+                    <h3>{{ post.title }}</h3>
+
+                    <p class="ads-preview">{{ post.preview }}</p>
+
+                    <div class="ads-meta">
+                        <span>👤 {{ post.author.username }}</span>
+                        <span>💬 {{ post.published_responses_count }}</span>
+                        <span>🕒 {{ post.created_at|date:"d.m.Y H:i" }}</span>
+                    </div>
+                </div>
+
+                <div class="ads-side">
+                    <div class="cat_ads">
+                        {{ post.category }}
+                    </div>
+                </div>
+                </a>
+
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h4>Объявлений нет</h4>
+        {% endif %}
+    </section>
+    <div class="sidebar-right">
+
+        <div class="popcat">
+            <h3>Популярные категории</h3>
+            <ul class="popcat-list">
+                {% for cat in popcat %}
+                <li class="popcat-item">
+                    {{ cat.name }}
+                    <span class="popcat-count">{{ cat.ads_count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="stats-block">
+            <div class="stat-item">
+                <span class="stat-label">Активные объявления</span>
+                <span class="stat-number">{{ active_ads_count }}</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Зарегистрированные пользователи</span>
+                <span class="stat-number">{{ users_count }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% if page_obj.has_other_pages %}
+<nav class="list-pages">
+    <ul>
+        {% if  not page_obj.has_previous %}
+        <li class="page-num-disabled">&lt&lt</li>
+        <li class="page-num-disabled">&lt</li>
+        {% else %}
+        <li><a href="?{% url_replace page=1 %}">&lt&lt</a></li>
+        <li><a href="?{% url_replace page=page_obj.previous_page_number %}">&lt</a></li>
+        {% endif %}
+        {% for p in page_obj.paginator.page_range %}
+        {% if page_obj.number == p %}
+        <li class="page-num-selected">{{ p }}</li>
+        {% elif page_obj.number|add:-3 <= p and page_obj.number|add:3 >= p %}
+        <li><a href="?{% url_replace page=p %}">{{ p }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if  not page_obj.has_next %}
+        <li class="page-num-disabled">&gt</li>
+        <li class="page-num-disabled">&gt&gt</li>
+        {% else %}
+        <li><a href="?{% url_replace page=page_obj.next_page_number %}">&gt</a></li>
+        <li><a href="?{% url_replace page=page_obj.paginator.num_pages %}">&gt&gt</a></li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+

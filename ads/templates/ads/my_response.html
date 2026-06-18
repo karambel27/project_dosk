@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="my-responses-page">
+
+    <h1 class="my-responses-title">
+        Мои отклики
+    </h1>
+
+    {% if responses %}
+    <div class="my-responses-list">
+
+        {% for response in responses %}
+        <div class="my-response-card">
+
+            <div class="my-response-header">
+
+                <div>
+                    <h3>
+                        <a href="{% url 'showads' response.ads.pk %}">
+                            {{ response.ads.title }}
+                        </a>
+                    </h3>
+
+                    <span class="my-response-date">
+                                {{ response.created_at|date:"d.m.Y H:i" }}
+                            </span>
+                </div>
+
+                <div>
+                    {% if response.is_accepted == 2 %}
+                    <span class="response-status accepted">
+                                    Принят
+                                </span>
+
+                    {% elif response.is_accepted == 1 %}
+                    <span class="response-status rejected">
+                                    Отклонён
+                                </span>
+
+                    {% else %}
+                    <span class="response-status waiting">
+                                    Ожидает ответа
+                                </span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="my-response-text">
+                {{ response.text }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-responses">
+        Вы ещё не оставили ни одного отклика.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

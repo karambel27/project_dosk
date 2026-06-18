@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="/" class="logo">
+            ⚔ MMORPG BOARD
+        </a>
+
+        <nav class="nav">
+            <a href="/">Главная</a>
+            {% if perms.ads.add_ads %}
+            <a href="{% url 'createdads' %}">Создать объявление</a>
+            <a href="{% url 'myads' %}">Мои объявления</a>
+            {% endif %}
+            {% if perms.ads.add_response %}
+            <a href="{% url 'responsensesmenu' %}">Отклики</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <a href="{% url 'users:profile' %}">{{ user.username }}</a><span class="divider"></span>
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <button type="submit">
+                    Выйти
+                </button>
+            </form>
+            {% else %}
+            <a href="{% url 'account_login' %}">Войти</a>
+            <a href="{% url 'account_signup' %}">Регистрация</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main class="main">
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>© 2026 MMORPG Board. Фанатская доска объявлений.</p>
+    </div>
+</footer>
+
+</body>
+</html>

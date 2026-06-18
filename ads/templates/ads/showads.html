@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="ad-detail-layout">
+
+    <section class="ad-detail-main">
+
+
+        <h1 class="ad-detail-title">{{ ad.title }}</h1>
+
+        <div class="ad-detail-meta">
+            <span class="ad-category">{{ ad.category }}</span>
+            <span>👤 {{ ad.author.username }}</span>
+            <span>🕒 {{ ad.created_at|date:"d.m.Y H:i" }}</span>
+            <span>💬 {{ ad.responses.count }}</span>
+        </div>
+
+        <div class="ad-content-card">
+            <div class="ad-content">
+                {{ ad.content|safe }}
+            </div>
+        </div>
+
+    </section>
+
+    <aside class="ad-detail-sidebar">
+
+        <div class="ad-info-card">
+            <h3>Информация</h3>
+
+            <div class="info-row">
+                <span>Категория:</span>
+                <strong>{{ ad.category }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Опубликовано:</span>
+                <strong>{{ ad.created_at|date:"d.m.Y" }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Откликов:</span>
+                <strong>{{ ad.responses.count }}</strong>
+            </div>
+        </div>
+
+        <div class="ad-info-card">
+            <h3>Автор</h3>
+            <a href="{% url 'profileshow' ad.author.pk %}">
+                <div class="author-box">
+                    <div class="author-avatar">
+                        {{ ad.author.username|first|upper }}
+                    </div>
+
+                    <div>
+                        <strong>{{ ad.author.username }}</strong>
+                        <p>Участник MMORPG Board</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </aside>
+
+    <div class="responses-section">
+
+        <h2>Отклики ({{ count_responses }})</h2>
+
+        {% if user.is_authenticated and not user_author %}
+        <form method="post" action="{% url 'create_response' ad.pk %}" class="response-form">
+            {% csrf_token %}
+
+            {{ form.text }}
+
+            <button type="submit" class="response-btn">
+                Отправить отклик
+            </button>
+        </form>
+        {% elif user_author %}
+        {% else %}
+        <p class="login-required">
+            Чтобы оставить отклик, нужно
+            <a href="{% url 'account_login' %}">войти</a>.
+        </p>
+        {% endif %}
+
+        <div class="responses-list">
+            {% for response in responses_expextation %}
+            <div class="pending-response-card">
+                <div class="pending-badge">
+                    ⏳ Ожидает ответа
+                </div>
+
+                <div class="pending-header">
+                    <div>
+                        <strong>От: {{ response.author }}</strong>
+                        <div class="pending-date">
+                            {{ response.created_at|date:"d.m.Y H:i" }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pending-text">
+                    {{ response.text }}
+                </div>
+            </div>
+            {% endfor %}
+
+            {% for response in responses %}
+            <div class="response-card">
+                <div class="response-header">
+                    <strong>{{ response.author.username }}</strong>
+                    <span>{{ response.created_at|date:"d.m.Y H:i" }}</span>
+                </div>
+
+                <p>{{ response.text }}</p>
+            </div>
+            {% empty %}
+            <p class="no-responses">Пока откликов нет.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

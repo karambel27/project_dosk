@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="error403-container">
+
+    <div class="error403-card">
+
+        <div class="error403-code">
+            403
+        </div>
+
+        <h1 class="error403-title">
+            Доступ запрещён
+        </h1>
+
+        <p class="error403-text">
+            У вас недостаточно прав для просмотра этой страницы.
+        </p>
+
+        <p class="error403-subtext">
+            Возможно, ваш аккаунт ещё не подтверждён или данное действие доступно только определённым пользователям.
+        </p>
+
+        <div class="error403-buttons">
+            <a href="{% url 'home' %}" class="error403-btn">
+                На главную
+            </a>
+
+            {% if not user.is_authenticated %}
+                <a href="{% url 'account_login' %}" class="error403-btn-secondary">
+                    Войти
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
