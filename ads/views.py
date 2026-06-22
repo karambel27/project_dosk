@@ -38,8 +38,6 @@ class IndexView(ListView):
         return queryset
 
 
-
-
 class ShowAdsView(DetailView):
     model = Ads
     template_name = 'ads/showads.html'
