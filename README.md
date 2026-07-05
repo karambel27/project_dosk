@@ -1,129 +1,104 @@
-# ⚔ MMORPG Board
+# MMORPG Board
 
-Современная доска объявлений для игроков MMORPG, разработанная на **Django**.
+Django web application for an MMORPG community board. Users can register, create ads, respond to ads and receive email notifications.
 
-Проект позволяет пользователям публиковать игровые объявления, оставлять отклики, взаимодействовать друг с другом и получать уведомления по электронной почте. Основная цель проекта — создать удобную платформу для поиска игроков, обмена игровыми предметами и общения внутри MMORPG-сообщества.
+## Tech Stack
 
----
+- Python
+- Django
+- Django ORM
+- Django Allauth
+- PostgreSQL
+- Redis
+- Celery
+- django-celery-beat
+- django-filter
+- django-ckeditor
+- HTML/CSS
 
-# 🚀 Возможности проекта
+## Features
 
-## 👤 Пользователи
+- User registration and authentication
+- Custom user profile with avatar and personal data
+- Ads CRUD
+- Categories for ads
+- Responses to ads
+- Accept/reject response flow
+- Email notifications
+- Background tasks with Celery and Redis
+- Django admin customization
 
-* Регистрация и авторизация
-* Подтверждение электронной почты
-* Расширенный профиль пользователя
-* Загрузка фотографии профиля
-* Информация о пользователе
-* Дата рождения
+## Run Locally
 
----
+Create and activate a virtual environment:
 
-## 📜 Объявления
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
 
-Пользователь может:
+On Windows PowerShell:
 
-* создавать объявления;
-* редактировать собственные объявления;
-* удалять объявления;
-* просматривать объявления других пользователей;
-* просматривать список своих объявлений.
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-Каждое объявление содержит:
+Install dependencies:
 
-* заголовок;
-* описание;
-* категорию;
-* автора;
-* дату публикации.
+```bash
+pip install -r requirements.txt
+```
 
----
+Create `.env` from `.env.example` and set your local values:
 
-## 💬 Отклики
+```bash
+cp .env.example .env
+```
 
-Для каждого объявления пользователи могут оставить отклик.
+Apply migrations:
 
-Автор объявления может:
+```bash
+python manage.py migrate
+```
 
-* просматривать поступившие отклики;
-* принять отклик;
-* отклонить отклик.
+Run the development server:
 
-Статусы откликов:
+```bash
+python manage.py runserver
+```
 
-* ⏳ Ожидает ответа
-* ✅ Принят
-* ❌ Отклонён
+Open:
 
----
+```text
+http://127.0.0.1:8000/
+```
 
-## ✉ Email-уведомления
+## Environment Variables
 
-Система автоматически отправляет электронные письма при следующих событиях:
+The project reads secrets and local settings from `.env`.
 
-* регистрация пользователя;
-* подтверждение электронной почты;
-* поступление нового отклика;
-* принятие отклика;
-* отклонение отклика.
+Important variables:
 
----
+- `SECRET_KEY`
+- `DEBUG`
+- `ALLOWED_HOSTS`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_HOST`
+- `DB_PORT`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `CELERY_BROKER_URL`
+- `CELERY_RESULT_BACKEND`
 
-## 📬 Еженедельная рассылка
+## What This Project Shows
 
-При помощи **Celery** и **Redis** реализована автоматическая еженедельная рассылка пользователям с подтверждённой электронной почтой.
-
-Рассылка включает:
-
-* количество новых объявлений;
-* последние опубликованные объявления;
-* приглашение перейти на сайт.
-
----
-
-# 🔒 Безопасность
-
-В проекте реализованы:
-
-* разграничение прав доступа;
-* подтверждение электронной почты;
-* защита представлений;
-* проверка прав владельца объекта;
-* использование групп пользователей;
-* CSRF-защита Django.
-
----
-
-# ⚙ Используемые технологии
-
-* Python
-* Django
-* Django ORM
-* Django Allauth
-* Celery
-* Redis
-* SQLite
-* HTML5
-* CSS3
-* Git
-* GitHub
-
----
-
-# 📌 Проект находится в разработке
-
-В дальнейшем планируется расширение функциональности. Среди запланированных возможностей:
-
-* 💬 Личные сообщения между пользователями.
-* 🔔 Уведомления внутри сайта в режиме реального времени.
-* ⭐ Система избранных объявлений.
-* ❤️ Лайки и рейтинг пользователей.
-* 🔍 Расширенный поиск и фильтрация объявлений.
-* 🏷️ Теги для объявлений.
-* 🖼️ Галерея изображений для объявлений.
-* 📊 Статистика профиля пользователя.
-* 📱 Адаптация интерфейса для мобильных устройств.
-* 🌙 Переключение светлой и тёмной темы.
-* ⚙️ REST API для мобильного приложения.
-* 🐳 Контейнеризация проекта с использованием Docker.
-* 🚀 Развертывание проекта на удалённом сервере.
+- Django project structure
+- Models, views, forms and templates
+- User authentication and permissions
+- Working with PostgreSQL
+- Background jobs with Celery/Redis
+- Email notifications
+- Preparing a Django project for GitHub
