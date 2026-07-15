@@ -4,12 +4,19 @@
 <div class="org">
     <h1>Доска объявлений MMORPG</h1>
     <p>Найти группу, гильдию или игроков для совместных приключений</p>
-    {% if perms.ads.add_ads %}
+    {% if user.is_authenticated %}
     <a href="{% url 'createdads' %}" class="create-ad-btn">
         <span class="plus-icon">+</span>
         Создать объявление
     </a>
     {% endif  %}
+<!--    <form method="get" class="home-search-form">-->
+<!--        {% if request.GET.category %}-->
+<!--        <input type="hidden" name="category" value="{{ request.GET.category }}">-->
+<!--        {% endif %}-->
+<!--        <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Поиск по объявлениям">-->
+<!--        <button type="submit">Найти</button>-->
+<!--    </form>-->
 </div>
 <div class="home-layout">
     <aside class="catside">
@@ -39,7 +46,7 @@
 
                     <div class="ads-meta">
                         <span>👤 {{ post.author.username }}</span>
-                        <span>💬 {{ post.published_responses_count }}</span>
+                        <span>💬 {{ post.accepted_responses_count }}</span>
                         <span>🕒 {{ post.created_at|date:"d.m.Y H:i" }}</span>
                     </div>
                 </div>

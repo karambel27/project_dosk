@@ -665,50 +665,6 @@ a {
     box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
 }
 
-/* CKEditor */
-.django-ckeditor-widget {
-    width: 100% !important;
-}
-
-.form-field .cke {
-    width: 100% !important;
-    border: 1px solid rgba(139, 107, 47, 0.75) !important;
-    border-radius: 6px !important;
-    overflow: hidden;
-}
-
-.form-field .cke_top,
-.form-field .cke_bottom {
-    background: rgba(13, 11, 8, 0.95) !important;
-    border-color: rgba(139, 107, 47, 0.35) !important;
-}
-
-.form-field .cke_contents {
-    min-height: 300px !important;
-    background: rgba(8, 8, 8, 0.75) !important;
-}
-
-
-.cke_contents iframe {
-    background: #0d0b08 !important;
-}
-
-
-.cke_editable {
-    background: #0d0b08 !important;
-    color: #f5e6c8 !important;
-    font-size: 16px;
-    line-height: 1.7;
-}
-
-
-.cke_editable h1,
-.cke_editable h2,
-.cke_editable h3,
-.cke_editable h4 {
-    color: #d4af37;
-}
-
 .ad-detail-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 300px;

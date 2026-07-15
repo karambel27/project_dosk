@@ -1,0 +1,15 @@
+.git
+.github
+.env
+.venv
+venv
+.idea
+__pycache__
+*.py[cod]
+.ruff_cache
+.pytest_cache
+db.sqlite3
+celerybeat-schedule*
+staticfiles
+media/users/20*
+media/uploads

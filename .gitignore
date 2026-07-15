@@ -12,3 +12,10 @@ __pycache__/
 celerybeat-schedule*
 *.log
 cache_files/
+/media/users/*
+!/media/users/photo_default.jpg
+/media/uploads/
+staticfiles/
+htmlcov/
+.coverage
+.mypy_cache/

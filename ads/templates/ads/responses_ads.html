@@ -81,8 +81,14 @@
             </div>
             {% if response.is_accepted == 0 %}
             <div class="owner-response-actions">
-                <button class="owner-response-accept"><a href="{% url 'accept' response.pk %}">✓</a></button>
-                <button class="owner-response-delete"><a href="{% url 'delete' response.pk %}">🗑</a></button>
+                <form method="post" action="{% url 'accept' response.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="owner-response-accept" aria-label="Принять">✓</button>
+                </form>
+                <form method="post" action="{% url 'reject' response.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="owner-response-delete" aria-label="Отклонить">🗑</button>
+                </form>
             </div>
             {% endif %}
 

@@ -13,7 +13,7 @@
             <span class="ad-category">{{ ad.category }}</span>
             <span>👤 {{ ad.author.username }}</span>
             <span>🕒 {{ ad.created_at|date:"d.m.Y H:i" }}</span>
-            <span>💬 {{ ad.responses.count }}</span>
+            <span>💬 {{ ad.responses_count }}</span>
         </div>
 
         <div class="ad-content-card">
@@ -41,7 +41,7 @@
 
             <div class="info-row">
                 <span>Откликов:</span>
-                <strong>{{ ad.responses.count }}</strong>
+                <strong>{{ ad.responses_count }}</strong>
             </div>
         </div>
 
