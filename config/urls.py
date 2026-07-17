@@ -15,18 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin
-from django.urls import path, include
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
 from config import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include('ads.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('accounts/', include('allauth.urls')),
-    path("users/", include('users.urls', namespace='users')),
+    path("", include("ads.urls")),
+    path("accounts/", include("allauth.urls")),
+    path("users/", include("users.urls", namespace="users")),
 ]
 
 if settings.DEBUG:

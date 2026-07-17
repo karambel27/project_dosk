@@ -18,12 +18,10 @@
 
         <nav class="nav">
             <a href="/">Главная</a>
-            {% if perms.ads.add_ads %}
+            {% if user.is_authenticated %}
             <a href="{% url 'createdads' %}">Создать объявление</a>
             <a href="{% url 'myads' %}">Мои объявления</a>
-            {% endif %}
-            {% if perms.ads.add_response %}
-            <a href="{% url 'responsensesmenu' %}">Отклики</a>
+            <a href="{% url 'responses_menu' %}">Отклики</a>
             {% endif %}
             {% if user.is_authenticated %}
             <a href="{% url 'users:profile' %}">{{ user.username }}</a><span class="divider"></span>
@@ -43,6 +41,13 @@
 
 <main class="main">
     <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>

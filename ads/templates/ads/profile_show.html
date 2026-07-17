@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -9,7 +10,7 @@
             {% if profile_user.photo %}
                 <img src="{{ profile_user.photo.url }}" alt="{{ profile_user.username }}" class="author-profile-avatar-img">
             {% else %}
-                <img src="/media/users/photo_default.jpg" alt="{{ profile_user.username }}" class="author-profile-avatar-img">
+                <img src="{% static 'images/photo_default.jpg' %}" alt="{{ profile_user.username }}" class="author-profile-avatar-img">
             {% endif %}
         </div>
 
@@ -46,8 +47,8 @@
             <div class="author-profile-row">
                 <span>Дата рождения:</span>
                 <strong>
-                    {% if profile_user.data_bird %}
-                        {{ profile_user.data_bird|date:"d.m.Y" }}
+                    {% if profile_user.birth_date %}
+                        {{ profile_user.birth_date|date:"d.m.Y" }}
                     {% else %}
                         Не указано
                     {% endif %}
@@ -60,12 +61,12 @@
 
             <div class="author-profile-stats">
                 <div class="author-profile-stat-item">
-                    <strong>{{ profile_user.ads.count }}</strong>
+                    <strong>{{ profile_user.ads_count }}</strong>
                     <span>объявлений</span>
                 </div>
 
                 <div class="author-profile-stat-item">
-                    <strong>{{ profile_user.responses.count }}</strong>
+                    <strong>{{ profile_user.responses_count }}</strong>
                     <span>откликов</span>
                 </div>
             </div>

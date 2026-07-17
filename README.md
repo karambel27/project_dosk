@@ -1,104 +1,137 @@
 # MMORPG Board
 
-Django web application for an MMORPG community board. Users can register, create ads, respond to ads and receive email notifications.
+Django-сайт сообщества MMORPG: пользователи регистрируются, подтверждают email, публикуют объявления по категориям и отправляют отклики. Автор объявления может принять или отклонить отклик, а участники получают фоновые email-уведомления и еженедельный digest.
 
-## Tech Stack
+Проект использует server-rendered templates, session authentication и CSRF. JWT здесь не нужен: браузерное приложение не имеет отдельного SPA/mobile API, а защищённые cookie и object-level ownership checks соответствуют его архитектуре.
 
-- Python
-- Django
-- Django ORM
-- Django Allauth
-- PostgreSQL
-- Redis
-- Celery
-- django-celery-beat
-- django-filter
-- django-ckeditor
-- HTML/CSS
+## Возможности
 
-## Features
+- регистрация и обязательная email-верификация через django-allauth;
+- пользовательский профиль и аватар;
+- создание, редактирование, публикация и удаление своих объявлений;
+- категории, поиск и пагинация;
+- черновики, доступные только владельцу;
+- один отклик пользователя на объявление;
+- запрет отклика на собственное объявление;
+- POST-only принятие/отклонение с CSRF-защитой;
+- Celery-задачи с retry для email-уведомлений;
+- еженедельная рассылка через Celery Beat;
+- eager loading и агрегаты без N+1;
+- серверная очистка пользовательского HTML;
+- production-профиль PostgreSQL/Redis/Gunicorn/WhiteNoise;
+- тесты permissions, ownership, ORM и фоновых уведомлений.
 
-- User registration and authentication
-- Custom user profile with avatar and personal data
-- Ads CRUD
-- Categories for ads
-- Responses to ads
-- Accept/reject response flow
-- Email notifications
-- Background tasks with Celery and Redis
-- Django admin customization
+## Стек
 
-## Run Locally
+- Python 3.12+
+- Django 6, django-allauth, django-filter
+- PostgreSQL / SQLite
+- Celery, Redis
+- Bleach, Pillow
+- Gunicorn, WhiteNoise
+- Ruff, Django TestCase
+- Docker, Docker Compose, GitHub Actions
 
-Create and activate a virtual environment:
+## Локальный запуск
 
 ```bash
 python -m venv .venv
+```
+
+Linux/macOS:
+
+```bash
 source .venv/bin/activate
-```
-
-On Windows PowerShell:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Create `.env` from `.env.example` and set your local values:
-
-```bash
+pip install -r requirements-dev.txt
 cp .env.example .env
 ```
 
-Apply migrations:
+Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+Copy-Item .env.example .env
+```
+
+Примените миграции и запустите сервер:
 
 ```bash
 python manage.py migrate
-```
-
-Run the development server:
-
-```bash
+python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Open:
+Откройте `http://127.0.0.1:8000/`. Категории можно создать через Django Admin.
 
-```text
-http://127.0.0.1:8000/
+Локально используется SQLite, email выводятся в консоль, а Celery-задачи выполняются в eager-режиме. Поэтому для знакомства с проектом PostgreSQL, Redis и SMTP не обязательны.
+
+## Полный запуск в Docker
+
+```bash
+docker compose up --build
 ```
 
-## Environment Variables
+Compose поднимает пять сервисов:
 
-The project reads secrets and local settings from `.env`.
+- `web` — Django + Gunicorn;
+- `db` — PostgreSQL 16;
+- `redis` — broker/result backend;
+- `worker` — Celery worker;
+- `beat` — еженедельный планировщик.
 
-Important variables:
+После healthchecks приложение доступно на `http://127.0.0.1:8000/`. Значения паролей в Compose предназначены только для локальной разработки; при развёртывании секреты должны поступать из настроек платформы или secret storage.
 
-- `SECRET_KEY`
-- `DEBUG`
-- `ALLOWED_HOSTS`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_HOST`
-- `DB_PORT`
-- `EMAIL_HOST_USER`
-- `EMAIL_HOST_PASSWORD`
-- `CELERY_BROKER_URL`
-- `CELERY_RESULT_BACKEND`
+## Настройки
 
-## What This Project Shows
+| Переменная | Назначение |
+| --- | --- |
+| `DEBUG`, `SECRET_KEY`, `ALLOWED_HOSTS` | базовые Django settings |
+| `CSRF_TRUSTED_ORIGINS` | доверенные HTTPS origins |
+| `DB_ENGINE` | `sqlite` или `postgresql` |
+| `DB_NAME`, `DB_USER`, `DB_PASSWORD` | доступ к PostgreSQL |
+| `DB_HOST`, `DB_PORT` | адрес PostgreSQL |
+| `EMAIL_BACKEND` | console backend локально, SMTP в production |
+| `EMAIL_HOST*`, `DEFAULT_FROM_EMAIL` | SMTP settings |
+| `CELERY_BROKER_URL` | Redis broker |
+| `CELERY_RESULT_BACKEND` | Redis result backend |
+| `CELERY_TASK_ALWAYS_EAGER` | синхронный dev/test режим задач |
 
-- Django project structure
-- Models, views, forms and templates
-- User authentication and permissions
-- Working with PostgreSQL
-- Background jobs with Celery/Redis
-- Email notifications
-- Preparing a Django project for GitHub
+При `DEBUG=false` приложение требует отдельный `SECRET_KEY`, разрешённые hosts и PostgreSQL. Production-профиль включает secure cookies, HSTS, HTTPS redirect и WhiteNoise; TLS обычно завершается на reverse proxy.
+
+## Безопасность workflow
+
+- Изменение статуса отклика принимает только `POST` с CSRF token.
+- Статус может изменить только автор объявления или superuser.
+- Принятый/отклонённый отклик нельзя повторно перевести другим действием.
+- Черновик скрыт от всех, кроме автора и superuser.
+- Allauth использует подписанные ссылки с ограниченным сроком вместо самодельного короткого кода.
+- Поле объявления очищается через Bleach перед сохранением; неподдерживаемый CKEditor 4 удалён.
+- Email ставятся в очередь после успешного commit транзакции.
+
+## Проверки
+
+```bash
+ruff check .
+ruff format --check .
+python manage.py makemigrations --check --dry-run
+python manage.py test
+python manage.py check --deploy
+```
+
+Тесты сравнивают количество SQL-запросов при росте списка объявлений, проверяют ownership, запрет self-response, POST-only actions, очистку HTML, постановку Celery-задач и адресатов email.
+
+## Структура
+
+```text
+.
+├── ads/                  # объявления, отклики, tasks/signals, templates
+├── users/                # custom user и профиль
+├── config/               # settings, URLs, Celery, ASGI/WSGI
+├── templates/            # base и allauth templates
+├── static/               # CSS и интерфейсные изображения
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml
+└── requirements*.txt
+```
